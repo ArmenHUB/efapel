@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 17 2018 г., 10:02
+-- Время создания: Ноя 17 2018 г., 11:18
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -85,7 +85,10 @@ CREATE TABLE `goods` (
 INSERT INTO `goods` (`goodID`, `part_number`, `good_despID`, `good_typeID`) VALUES
 (1, '90910 TBR', 1, 1),
 (2, '90920 TBR', 2, 1),
-(3, '90930 TBR', 3, 1);
+(3, '90930 TBR', 3, 1),
+(4, '90940 TBR', 4, 1),
+(5, '90950 TBR', 5, 1),
+(6, '90910 TMF', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +135,10 @@ CREATE TABLE `good_colors` (
 INSERT INTO `good_colors` (`goodID`, `colorID`) VALUES
 (1, 1),
 (2, 1),
-(3, 1);
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 2);
 
 -- --------------------------------------------------------
 
@@ -159,7 +165,16 @@ INSERT INTO `good_description` (`good_despID`, `text`, `langID`) VALUES
 (2, 'ՍՊԻՏԱԿ ԵՐԿՈՒ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3),
 (3, 'TRIPLE FRAME WHITE', 1),
 (3, 'БЕЛАЯ ТРОЙНАЯ РАМКА', 2),
-(3, 'ՍՊԻՏԱԿ ԵՐԵՔ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3);
+(3, 'ՍՊԻՏԱԿ ԵՐԵՔ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3),
+(4, 'FOUR-GANG FRAME WHITE', 1),
+(4, 'FOUR-GANG FRAME WHITE RUS', 2),
+(4, 'ՍՊԻՏԱԿ ՉՈՐՍ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3),
+(5, 'FIVE-GANG FRAME WHITE', 1),
+(5, 'FIVE-GANG FRAME WHITE RUS', 2),
+(5, 'ՍՊԻՏԱԿ ՀԻՆԳ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3),
+(6, 'SINGLE FRAME IVORY', 1),
+(6, 'SINGLE FRAME IVORY RUS', 2),
+(6, 'ՓՂՈՍԿՐԵ ՄԵԿ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3);
 
 -- --------------------------------------------------------
 
@@ -191,7 +206,10 @@ CREATE TABLE `good_models` (
 INSERT INTO `good_models` (`goodID`, `modelID`) VALUES
 (1, 1),
 (2, 1),
-(3, 1);
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1);
 
 -- --------------------------------------------------------
 
@@ -211,7 +229,10 @@ CREATE TABLE `good_series` (
 INSERT INTO `good_series` (`goodID`, `seriesID`) VALUES
 (1, 1),
 (2, 1),
-(3, 1);
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1);
 
 -- --------------------------------------------------------
 
@@ -231,8 +252,11 @@ CREATE TABLE `good_size` (
 
 INSERT INTO `good_size` (`goodID`, `v_size`, `h_size`) VALUES
 (1, 1, 1),
-(2, 1, 1),
-(3, 1, 1);
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -512,7 +536,7 @@ ALTER TABLE `series_model`
 -- AUTO_INCREMENT для таблицы `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
