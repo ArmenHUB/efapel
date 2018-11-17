@@ -35,7 +35,7 @@ function FrameList($lang_id){
                                          AND `colors`.`langID` = '{$lang_id}'
                                          AND `goodTypes`.`langID` = '{$lang_id}'
                                          AND `good_size`.`v_size` = '1'
-                                         AND `good_size`.`v_size` = '1'
+                                         AND `good_size`.`h_size` = '1'
                                          AND `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
                                          AND `good_series`.`goodID` = `goods`.`goodID`
                                          AND `good_models`.`goodID` = `goods`.`goodID`
@@ -59,7 +59,7 @@ function FrameList($lang_id){
 //                                         WHERE `goodTypes`.`goodTypeID` = '{$good_type_frame}' AND `series`.`langID` = '{$lang_id}'
 //                                          AND `models`.`langID` = '{$lang_id}' AND `colors`.`langID` = '{$lang_id}'
 //                                          AND `goodTypes`.`langID` = '{$lang_id}' AND `good_size`.`v_size` = '1'
-//                                          AND `good_size`.`v_size` = '1'
+//                                          AND `good_size`.`h_size` = '1'
 //                                         ");
         if($data){
             return $data;
