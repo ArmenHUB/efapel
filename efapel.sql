@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 17 2018 г., 11:18
+-- Время создания: Ноя 17 2018 г., 11:59
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -44,7 +44,10 @@ INSERT INTO `colors` (`colorID`, `text`, `langID`) VALUES
 (1, 'ՍՊԻՏԱԿ', 3),
 (2, 'IVORY', 1),
 (2, 'ЦВЕТ СЛОНОВОЙ КОСТИ', 2),
-(2, 'ՓՂՈՍԿՐԻ ԳՈՒՅՆ', 3);
+(2, 'ՓՂՈՍԿՐԻ ԳՈՒՅՆ', 3),
+(3, 'ICE', 1),
+(3, 'ЦВЕТ ЛЬДА', 2),
+(3, 'ՍԱՌՈՒՅՑԻ ԳՈՒՅՆ', 3);
 
 -- --------------------------------------------------------
 
@@ -88,7 +91,8 @@ INSERT INTO `goods` (`goodID`, `part_number`, `good_despID`, `good_typeID`) VALU
 (3, '90930 TBR', 3, 1),
 (4, '90940 TBR', 4, 1),
 (5, '90950 TBR', 5, 1),
-(6, '90910 TMF', 6, 1);
+(6, '90910 TMF', 6, 1),
+(7, '90910 TGE', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -138,7 +142,8 @@ INSERT INTO `good_colors` (`goodID`, `colorID`) VALUES
 (3, 1),
 (4, 1),
 (5, 1),
-(6, 2);
+(6, 2),
+(7, 3);
 
 -- --------------------------------------------------------
 
@@ -209,7 +214,8 @@ INSERT INTO `good_models` (`goodID`, `modelID`) VALUES
 (3, 1),
 (4, 1),
 (5, 1),
-(6, 1);
+(6, 1),
+(7, 2);
 
 -- --------------------------------------------------------
 
@@ -232,7 +238,8 @@ INSERT INTO `good_series` (`goodID`, `seriesID`) VALUES
 (3, 1),
 (4, 1),
 (5, 1),
-(6, 1);
+(6, 1),
+(7, 1);
 
 -- --------------------------------------------------------
 
@@ -256,7 +263,8 @@ INSERT INTO `good_size` (`goodID`, `v_size`, `h_size`) VALUES
 (3, 1, 3),
 (4, 1, 4),
 (5, 1, 5),
-(6, 1, 1);
+(6, 1, 1),
+(7, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -536,7 +544,7 @@ ALTER TABLE `series_model`
 -- AUTO_INCREMENT для таблицы `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
