@@ -25,9 +25,9 @@ function FrameList($lang_id){
     $con = new Z_MySQL();
     $good_type_frame = GOOD_TYPE_FRAME;
     if($lang_id == 1 || $lang_id == 2 || $lang_id == 3){
-        $data = $con->queryNoDML("SELECT `series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color', `goods`.`part_number` AS 'code' FROM `goods`
+        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color',`good_pathes`.`path` AS 'path' FROM `goods`
                                          JOIN `goodTypes` JOIN `good_series` JOIN `good_models` JOIN `good_colors`
-                                         JOIN `series` JOIN `models` JOIN `colors` JOIN `good_size` WHERE
+                                         JOIN `series` JOIN `models` JOIN `colors` JOIN `good_size` JOIN `good_pathes` WHERE
 
                                          `goodTypes`.`goodTypeID` = '{$good_type_frame}'
                                          AND `series`.`langID` = '{$lang_id}'
@@ -44,6 +44,7 @@ function FrameList($lang_id){
                                          AND `models`.`modelID` = `good_models`.`modelID`
                                          AND `colors`.`colorID` = `good_colors`.`colorID`
                                          AND `good_size`.`goodID` = `goods`.`goodID`
+                                         AND `goods`.`goodID` = `good_pathes`.`goodID`
                                          ");
 //        $data = $con->queryNoDML("SELECT `series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color', `goods`.`part_number` AS 'code' FROM `goods`
 //
