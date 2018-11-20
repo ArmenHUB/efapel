@@ -14,6 +14,10 @@ switch ($params->command) {
         $result = FrameList($income_data->lang_id);
         $answer['info'] = $result;
         break;
+    case "mecanism_by_branch":
+        $result = MecanismByBranch($income_data->lang_id,$params->good_id);
+        $answer['info'] = $result;
+        break;
 }
 
 if ($answer['error'] > 0) {
@@ -72,3 +76,33 @@ function FrameList($lang_id){
     }
 }
 //print_r(FrameList(3));
+
+
+
+function MecanismByBranch($lang_id,$good_id){
+    $con = new Z_MySQL();
+    $frames = array(LOGUS_SERIES,SIRIUS_SERIES,APOLLO_SERIES,QUADRO_SERIES);
+    $good_type_mecanism = GOOD_TYPE_MECANISM;
+
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id}'")[0]['series_id'];
+    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id}'")[0]['color_id'];
+    if (in_array($series_id, $frames)) {
+       $mecanism_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `mecanisms`.`text` AS 'mecanism_name', `good_pathes`.`path` AS 'path',
+                                                  `price_goods`.`cost` AS 'price' FROM `goods`
+                                                  
+                                                  INNER JOIN `goodTypes` ON `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
+                                                  INNER JOIN `good_mecanisms` ON `good_mecanisms`.`goodID` = `goods`.`goodID`
+                                                  INNER JOIN `mecanisms` ON `mecanisms`.`mecanismID` = `good_mecanisms`.`mecanismID`
+                                                  INNER JOIN `good_pathes` ON `good_pathes`.`goodID` = `goods`.`goodID`
+                                                  INNER JOIN `price_goods` ON `price_goods`.`goodID` = `goods`.`goodID`
+                                                  INNER JOIN `good_colors` ON `good_colors`.`goodID` = `goods`.`goodID`
+                                                  
+                                                  WHERE `mecanisms`.`langID` = '{$lang_id}'
+                                                  AND (`good_colors`.`colorID` = '{$color_id}' OR  `good_colors`.`colorID` = '0')
+                                                  AND `goodTypes`.`langID` = '{$lang_id}'
+                                                  ");
+    }else{
+
+    }
+}
+//MecanismByBranch('3','5');
