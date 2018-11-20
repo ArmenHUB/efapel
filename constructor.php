@@ -100,6 +100,7 @@ function MecanismByBranch($lang_id,$good_id){
                                                   WHERE `mecanisms`.`langID` = '{$lang_id}'
                                                   AND (`good_colors`.`colorID` = '{$color_id}' OR  `good_colors`.`colorID` = '0')
                                                   AND `goodTypes`.`langID` = '{$lang_id}'
+                                                  AND `goods`.`good_typeID` = '{$good_type_mecanism}'
                                                   ");
     }else{
 
