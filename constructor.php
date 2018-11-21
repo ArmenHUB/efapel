@@ -18,6 +18,10 @@ switch ($params->command) {
         $result = MecanismByBranch($income_data->lang_id,$params->good_id);
         $answer['info'] = $result;
         break;
+  case "cover_by_mecanism":
+      $result = CoversByMecanism($income_data->lang_id,$params->good_id);
+      $answer['info'] = $result;
+        break;
 }
 
 if ($answer['error'] > 0) {
@@ -107,3 +111,31 @@ function MecanismByBranch($lang_id,$good_id){
     }
 }
 //MecanismByBranch('3','5');
+
+function CoversByMecanism($lang_id,$good_id){
+    $con = new Z_MySQL();
+    $frames = array(LOGUS_SERIES,SIRIUS_SERIES,APOLLO_SERIES,QUADRO_SERIES);
+    $good_type_cover = GOOD_TYPE_COVER;
+
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id}'")[0]['series_id'];
+    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id}'")[0]['color_id'];
+    $mecanism_id = $con->queryNoDML("SELECT `good_mecanisms`.`mecanismID` AS 'mecanism_id' FROM `good_mecanisms` WHERE `good_mecanisms`.`goodID` = '{$good_id}'")[0]['mecanism_id'];
+
+    $cover_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id',  `good_pathes`.`path` AS 'path',
+                                                  `price_goods`.`cost` AS 'price' FROM `goods`
+                                                   JOIN `goodTypes` JOIN `good_mecanisms`  JOIN `good_pathes`
+                                                   JOIN `price_goods` JOIN `good_colors` JOIN `good_series` 
+                                                   
+                                                  WHERE `goods`.`good_typeID` = '{$good_type_cover}'
+                                                  AND (`good_colors`.`colorID` = '{$color_id}' OR `good_colors`.`colorID` = '0')
+                                                  AND `good_series`.`seriesID` = '{$series_id}'
+                                                  AND `goodTypes`.`langID` = '{$lang_id}'
+                                                  AND `good_mecanisms`.`goodTypeID` = '{$good_type_cover}'
+                                                  AND `good_mecanisms`.`mecanismID` = '{$mecanism_id}'
+                                                  AND `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
+                                                  AND `good_mecanisms`.`goodID` = `goods`.`goodID`
+                                                  AND `good_pathes`.`goodID` = `goods`.`goodID`
+                                                  AND `price_goods`.`goodID` = `goods`.`goodID`
+                                                  AND `good_colors`.`goodID` = `goods`.`goodID`
+                                                  AND `good_series`.`goodID` = `goods`.`goodID`");
+}
