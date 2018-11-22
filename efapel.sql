@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 17 2018 г., 11:59
+-- Время создания: Ноя 22 2018 г., 17:53
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -66,7 +66,8 @@ CREATE TABLE `default_colors` (
 --
 
 INSERT INTO `default_colors` (`seriesID`, `modelID`, `default_colorID`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(1, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -92,7 +93,13 @@ INSERT INTO `goods` (`goodID`, `part_number`, `good_despID`, `good_typeID`) VALU
 (4, '90940 TBR', 4, 1),
 (5, '90950 TBR', 5, 1),
 (6, '90910 TMF', 6, 1),
-(7, '90910 TGE', 0, 1);
+(7, '90910 TGE', 0, 1),
+(8, '21011', 0, 2),
+(9, '21012', 0, 2),
+(10, '21013', 0, 2),
+(11, '21031', 0, 2),
+(12, '50744T', 0, 3),
+(13, '50745T', 0, 3);
 
 -- --------------------------------------------------------
 
@@ -143,7 +150,13 @@ INSERT INTO `good_colors` (`goodID`, `colorID`) VALUES
 (4, 1),
 (5, 1),
 (6, 2),
-(7, 3);
+(7, 3),
+(8, 0),
+(9, 0),
+(10, 2),
+(11, 0),
+(12, 1),
+(13, 2);
 
 -- --------------------------------------------------------
 
@@ -179,7 +192,7 @@ INSERT INTO `good_description` (`good_despID`, `text`, `langID`) VALUES
 (5, 'ՍՊԻՏԱԿ ՀԻՆԳ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3),
 (6, 'SINGLE FRAME IVORY', 1),
 (6, 'SINGLE FRAME IVORY RUS', 2),
-(6, 'ՓՂՈՍԿՐԵ ՄԵԿ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3);
+(6, 'ՓՂՈՍԿՐԵ ԳՈՒՅՆՈՎ ՄԵԿ ՏԵՂԱՆՈՑ ՇՐՋԱՆԱԿ', 3);
 
 -- --------------------------------------------------------
 
@@ -192,6 +205,18 @@ CREATE TABLE `good_mecanisms` (
   `mecanismID` int(11) NOT NULL,
   `goodTypeID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `good_mecanisms`
+--
+
+INSERT INTO `good_mecanisms` (`goodID`, `mecanismID`, `goodTypeID`) VALUES
+(8, 1, 2),
+(9, 2, 2),
+(10, 3, 2),
+(11, 4, 2),
+(12, 1, 3),
+(13, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -220,6 +245,36 @@ INSERT INTO `good_models` (`goodID`, `modelID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `good_pathes`
+--
+
+CREATE TABLE `good_pathes` (
+  `goodID` int(11) NOT NULL,
+  `path` varchar(12) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `good_pathes`
+--
+
+INSERT INTO `good_pathes` (`goodID`, `path`) VALUES
+(1, 'path'),
+(2, 'path'),
+(3, 'path'),
+(4, 'path'),
+(5, 'path'),
+(6, 'path 1'),
+(7, 'path'),
+(8, 'path 2'),
+(9, 'path 3'),
+(10, 'path 4'),
+(11, 'path12'),
+(12, 'path5'),
+(13, 'path6');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `good_series`
 --
 
@@ -239,7 +294,13 @@ INSERT INTO `good_series` (`goodID`, `seriesID`) VALUES
 (4, 1),
 (5, 1),
 (6, 1),
-(7, 1);
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 4),
+(12, 1),
+(13, 1);
 
 -- --------------------------------------------------------
 
@@ -297,6 +358,24 @@ CREATE TABLE `mecanisms` (
   `text` text NOT NULL,
   `langID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mecanisms`
+--
+
+INSERT INTO `mecanisms` (`mecanismID`, `text`, `langID`) VALUES
+(1, 'POLE SWITCH', 1),
+(1, 'ПОЛЮСНЫЙ ПЕРЕКЛЮЧАТЕЛЬ', 2),
+(1, 'ԲեւԵՌԱՅԻՆ ԱՆՋԱՏԻՉ', 3),
+(2, 'POLE SWITCH WITH ORIENTING LIGHT', 1),
+(2, 'ПОЛЮСНЫЙ ПЕРЕКЛЮЧАТЕЛЬ С ОРИЕНТИРОВАННЫМ СВЕТОМ', 2),
+(2, 'ԲեւԵՌԱՅԻՆ ԱՆՋԱՏԻՉ ԿԵՆՏՐՈՆԱՑՎԱԾ ԼՈՒՅՍՈՎ', 3),
+(3, 'POLE SWITCH WITH PILOT LAMP', 1),
+(3, 'ПОЛЮСНЫЙ ПЕРЕКЛЮЧАТЕЛЬ С ПИЛОТНОЙ ЛАМПОЙ', 2),
+(3, 'ԲեւԵՌԱՅԻՆ ԱՆՋԱՏԻՉ ՕԴԱՉՈՒ ԼԱՄՊՈՎ', 3),
+(4, 'CARD-SYSTEM SWITCH', 1),
+(4, 'ПЕРЕКЛЮЧАТЕЛЬ СИСТЕМЫ КАРТЫ', 2),
+(4, 'ՔԱՐՏՈՎ ԱՆՋԱՏԻՉ', 3);
 
 -- --------------------------------------------------------
 
@@ -378,7 +457,8 @@ CREATE TABLE `model_colors` (
 
 INSERT INTO `model_colors` (`modelID`, `colorID`) VALUES
 (1, 1),
-(1, 2);
+(1, 2),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -392,6 +472,15 @@ CREATE TABLE `prices` (
   `langID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `prices`
+--
+
+INSERT INTO `prices` (`priceID`, `text`, `langID`) VALUES
+(1, 'Dram', 1),
+(1, 'Драм', 2),
+(1, 'Դրամ', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -403,6 +492,25 @@ CREATE TABLE `price_goods` (
   `goodID` int(11) NOT NULL,
   `cost` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `price_goods`
+--
+
+INSERT INTO `price_goods` (`priceID`, `goodID`, `cost`) VALUES
+(1, 1, '1000'),
+(1, 2, '1000'),
+(1, 3, '1000'),
+(1, 4, '1000'),
+(1, 5, '1000'),
+(1, 6, '1000'),
+(1, 7, '1100'),
+(1, 8, '2200'),
+(1, 9, '2300'),
+(1, 10, '2500'),
+(1, 11, '2600'),
+(1, 12, '3000'),
+(1, 13, '3100');
 
 -- --------------------------------------------------------
 
@@ -432,7 +540,10 @@ INSERT INTO `series` (`seriesID`, `text`, `langID`) VALUES
 (3, 'Ապոլլո 5000', 3),
 (4, 'Quadro 45', 1),
 (4, 'Квадро 45', 2),
-(4, 'Կվադրո 45', 3);
+(4, 'Կվադրո 45', 3),
+(5, 'Cover Series', 1),
+(5, 'Cover Series RUS', 2),
+(5, 'Cover Series ARM', 3);
 
 -- --------------------------------------------------------
 
@@ -495,6 +606,12 @@ ALTER TABLE `good_description`
   ADD PRIMARY KEY (`good_despID`,`langID`);
 
 --
+-- Индексы таблицы `good_pathes`
+--
+ALTER TABLE `good_pathes`
+  ADD PRIMARY KEY (`goodID`);
+
+--
 -- Индексы таблицы `languages`
 --
 ALTER TABLE `languages`
@@ -544,7 +661,13 @@ ALTER TABLE `series_model`
 -- AUTO_INCREMENT для таблицы `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT для таблицы `good_pathes`
+--
+ALTER TABLE `good_pathes`
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
