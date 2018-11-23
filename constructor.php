@@ -15,7 +15,7 @@ switch ($params->command) {
         $answer['info'] = $result;
         break;
     case "mecanism_by_frame":
-        $result = MecanismByFrame($income_data->lang_id,$params->good_id);
+        $result = MecanismByFrame($income_data->lang_id,$params->good_id_frame);
         $answer['info'] = $result;
         break;
     case "default_cover_by_mecanism":
@@ -23,11 +23,15 @@ switch ($params->command) {
       $answer['info'] = $result;
         break;
     case "cover_list_by_mecanism":
-        $result = CoverListByMecanism($income_data->lang_id,$params->good_id);
+        $result = CoverListByMecanism($income_data->lang_id,$params->good_id_mecanism);
         $answer['info'] = $result;
         break;
     case "mecanisms_list_by_series":
-        $result = MecanismListBySeries($income_data->lang_id,$params->good_id);
+        $result = MecanismListBySeries($income_data->lang_id,$params->good_id_frame);
+        $answer['info'] = $result;
+        break;
+    case "frame_vertical_horizont":
+        $result = FrameVerticalHorizont($income_data->lang_id,$params->good_id_frame);
         $answer['info'] = $result;
         break;
 }
@@ -41,7 +45,7 @@ function FrameList($lang_id){
     $con = new Z_MySQL();
     $good_type_frame = GOOD_TYPE_FRAME;
     if($lang_id == 1 || $lang_id == 2 || $lang_id == 3){
-        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color',`good_pathes`.`path` AS 'path',`price_goods`.`cost` AS 'price' FROM `goods`
+        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id_frame',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color',`good_pathes`.`path` AS 'path',`price_goods`.`cost` AS 'price' FROM `goods`
                                          JOIN `goodTypes` JOIN `good_series` JOIN `good_models` JOIN `good_colors`
                                          JOIN `series` JOIN `models` JOIN `colors` JOIN `good_size` JOIN `good_pathes` 
                                          JOIN `price_goods`  WHERE
@@ -92,15 +96,15 @@ function FrameList($lang_id){
 }
 //print_r(FrameList(3));
 
-function MecanismByFrame($lang_id,$good_id){
+function MecanismByFrame($lang_id,$good_id_frame){
     $con = new Z_MySQL();
     $frames = array(LOGUS_SERIES,SIRIUS_SERIES,APOLLO_SERIES,QUADRO_SERIES);
     $good_type_mecanism = GOOD_TYPE_MECANISM;
 
-    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id}'")[0]['series_id'];
-    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id}'")[0]['color_id'];
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id_frame}'")[0]['series_id'];
+    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id_frame}'")[0]['color_id'];
     if (in_array($series_id, $frames)) {
-        $mecanism_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `mecanisms`.`text` AS 'mecanism_name', `good_pathes`.`path` AS 'path',
+        $mecanism_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id_mecanism', `mecanisms`.`text` AS 'mecanism_name', `good_pathes`.`path` AS 'path',
                                                   `price_goods`.`cost` AS 'price' FROM `goods`
                                                    JOIN `goodTypes` JOIN `good_mecanisms` JOIN `mecanisms` JOIN `good_pathes`
                                                    JOIN `price_goods` JOIN `good_colors` JOIN `good_series` 
@@ -209,12 +213,12 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
 
 }
 //print_r(DefaultCoverByMecanism('3','10'));
-function  CoverListByMecanism($lang_id,$good_id){
+function  CoverListByMecanism($lang_id,$good_id_mecanism){
     $con = new Z_MySQL();
     $good_type_cover = GOOD_TYPE_COVER;
 
-    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id}'")[0]['series_id'];
-    $mecanism_id = $con->queryNoDML("SELECT `good_mecanisms`.`mecanismID` AS 'mecanism_id' FROM `good_mecanisms` WHERE `good_mecanisms`.`goodID` = '{$good_id}'")[0]['mecanism_id'];
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id_mecanism}'")[0]['series_id'];
+    $mecanism_id = $con->queryNoDML("SELECT `good_mecanisms`.`mecanismID` AS 'mecanism_id' FROM `good_mecanisms` WHERE `good_mecanisms`.`goodID` = '{$good_id_mecanism}'")[0]['mecanism_id'];
 
     $cover_list = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `series`.`text` AS 'series',
                                               `good_pathes`.`path` AS 'path', `price_goods`.`cost` AS 'price' FROM `goods`
@@ -243,10 +247,10 @@ function  CoverListByMecanism($lang_id,$good_id){
     }
 }
 
-function MecanismListBySeries($lang_id,$good_id){
+function MecanismListBySeries($lang_id,$good_id_frame){
     $con = new Z_MySQL();
     $good_type_mecanism = GOOD_TYPE_MECANISM;
-    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id}'")[0]['series_id'];
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id_frame}'")[0]['series_id'];
     $mecanism_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `mecanisms`.`text` AS 'mecanism_name', `good_pathes`.`path` AS 'path',
                                                   `price_goods`.`cost` AS 'price' FROM `goods`
                                                    JOIN `goodTypes` JOIN `good_mecanisms` JOIN `mecanisms` JOIN `good_pathes`
@@ -269,4 +273,34 @@ function MecanismListBySeries($lang_id,$good_id){
     else{
         return FALSE;
     }
+}
+
+
+function FrameVerticalHorizont($lang_id,$good_id_frame){
+    $con = new Z_MySQL();
+    $good_type_frame = GOOD_TYPE_FRAME;
+    $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id_frame}'")[0]['series_id'];
+    $model_id = $con->queryNoDML("SELECT `good_models`.`modelID` AS 'model_id' FROM `good_models` WHERE `good_models`.`goodID` = '{$good_id_frame}'")[0]['model_id'];
+    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id_frame}'")[0]['color_id'];
+
+
+
+    $data = $con->queryNoDML("SELECT MAX(`good_size`.`v_size`) AS 'max_vertical',MAX(`good_size`.`h_size`) AS 'max_horizontal' FROM `good_size`
+                                     JOIN `goods` JOIN `good_series` JOIN `good_models` JOIN `good_colors`
+                                     
+                                     WHERE `good_series`.`seriesID` = '{$series_id}'
+                                     AND `good_models`.`modelID` = '{$model_id}'
+                                     AND `good_colors`.`colorID` = '{$color_id}'
+                                     AND `goods`.`goodID` = `good_size`.`goodID`
+                                     AND `good_series`.`goodID` = `goods`.`goodID`
+                                     AND `good_models`.`goodID` = `goods`.`goodID`
+                                     AND `good_colors`.`goodID` = `goods`.`goodID`");
+    if($data){
+        return $data;
+    }
+    else{
+        return FALSE;
+    }
+
+
 }
