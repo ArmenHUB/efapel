@@ -183,6 +183,7 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
                                                AND `good_colors`.`goodID` = `goods`.`goodID`
                                                AND `good_series`.`goodID` = `goods`.`goodID`
                                                AND `series`.`seriesID` = `good_series`.`seriesID`");
+
     if($default_cover){
         return $default_cover;
     }
@@ -190,6 +191,7 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
         return FALSE;
     }
 
+    
 //    $default_cover = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `series`.`text` AS 'series',
 //                                              `good_pathes`.`path` AS 'path', `price_goods`.`cost` AS 'price' FROM `goods`
 //
