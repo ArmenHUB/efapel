@@ -45,10 +45,10 @@ function FrameList($lang_id){
     $con = new Z_MySQL();
     $good_type_frame = GOOD_TYPE_FRAME;
     if($lang_id == 1 || $lang_id == 2 || $lang_id == 3){
-        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id_frame',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color',`good_pathes`.`path` AS 'path',`price_goods`.`cost` AS 'price' FROM `goods`
+        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id_frame',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color', `default_colors`.`default_colorID` AS 'def_color_id' ,`good_pathes`.`path` AS 'path',`price_goods`.`cost` AS 'price' FROM `goods`
                                          JOIN `goodTypes` JOIN `good_series` JOIN `good_models` JOIN `good_colors`
                                          JOIN `series` JOIN `models` JOIN `colors` JOIN `good_size` JOIN `good_pathes` 
-                                         JOIN `price_goods`  WHERE
+                                         JOIN `price_goods` JOIN `default_colors`  WHERE
 
                                          `goodTypes`.`goodTypeID` = '{$good_type_frame}'
                                          AND `series`.`langID` = '{$lang_id}'
@@ -67,6 +67,8 @@ function FrameList($lang_id){
                                          AND `good_size`.`goodID` = `goods`.`goodID`
                                          AND `goods`.`goodID` = `good_pathes`.`goodID`
                                          AND `goods`.`goodID` = `price_goods`.`goodID`
+                                         AND `series`.`seriesID` = `default_colors`.`seriesID`
+                                         AND `models`.`modelID` = `default_colors`.`modelID`
                                          ");
 //        $data = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id',`series`.`text` AS 'series', `models`.`text` AS 'model', `colors`.`text` AS 'color',`good_pathes`.`path` AS 'path' FROM `goods`
 //
@@ -102,7 +104,14 @@ function MecanismByFrame($lang_id,$good_id_frame){
     $good_type_mecanism = GOOD_TYPE_MECANISM;
 
     $series_id = $con->queryNoDML("SELECT `good_series`.`seriesID` AS 'series_id' FROM `good_series` WHERE `good_series`.`goodID` = '{$good_id_frame}'")[0]['series_id'];
-    $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id_frame}'")[0]['color_id'];
+
+    $model_id = $con->queryNoDML("SELECT `good_models`.`modelID` AS 'model_id' FROM `good_models` WHERE `good_models`.`goodID` = '{$good_id_frame}'")[0]['model_id'];
+
+    //$color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id_frame}'")[0]['color_id'];
+
+    $def_color_id = $con->queryNoDML("SELECT `default_colors`.`default_colorID` AS 'def_color_id' FROM `default_colors` WHERE `seriesID` = '{$series_id}' AND `modelID` = '{$model_id}'")[0]['def_color_id'];
+
+
     if (in_array($series_id, $frames)) {
         $mecanism_list =  $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id_mecanism', `mecanisms`.`text` AS 'mecanism_name', `good_pathes`.`path` AS 'path',
                                                   `price_goods`.`cost` AS 'price' FROM `goods`
@@ -110,8 +119,7 @@ function MecanismByFrame($lang_id,$good_id_frame){
                                                    JOIN `price_goods` JOIN `good_colors` JOIN `good_series` 
                                                    
                                                   WHERE `mecanisms`.`langID` = '{$lang_id}'
-                                                  AND (`good_colors`.`colorID` = '{$color_id}' OR `good_colors`.`colorID` = '0')
-                                                  AND `good_series`.`seriesID` = '{$series_id}'
+                                                  AND (`good_colors`.`colorID` = '{$def_color_id}' OR `good_colors`.`colorID` = '0')
                                                   AND `goodTypes`.`langID` = '{$lang_id}'
                                                   AND `goods`.`good_typeID` = '{$good_type_mecanism}'
                                                   AND `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
@@ -160,6 +168,7 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
     $good_type_cover = GOOD_TYPE_COVER;
 
     $color_id = $con->queryNoDML("SELECT `good_colors`.`colorID` AS 'color_id' FROM `good_colors` WHERE `good_colors`.`goodID` = '{$good_id_frame}'")[0]['color_id'];
+
     $mecanism_id = $con->queryNoDML("SELECT `good_mecanisms`.`mecanismID` AS 'mecanism_id' FROM `good_mecanisms` WHERE `good_mecanisms`.`goodID` = '{$good_id_mecanism}'")[0]['mecanism_id'];
 
 
@@ -191,28 +200,27 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
         return FALSE;
     }
 
-    
-//    $default_cover = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `series`.`text` AS 'series',
-//                                              `good_pathes`.`path` AS 'path', `price_goods`.`cost` AS 'price' FROM `goods`
-//
-//                                              JOIN `goodTypes` JOIN `good_mecanisms` JOIN `good_pathes` JOIN `price_goods`
-//                                              JOIN `good_colors` JOIN `good_series` JOIN `series`
-//
-//                                               WHERE `goodTypes`.`goodTypeID` = '{$good_type_cover}'
-//                                               AND `good_mecanisms`.`mecanismID` = '{$mecanism_id}'
-//                                               AND (`good_colors`.`colorID` = '{$color_id}' OR `good_colors`.`colorID` = '0')
-//                                               AND `good_series`.`seriesID` = '{$series_id}'
-//                                               AND `good_mecanisms`.`goodTypeID` = '{$good_type_cover}'
-//                                               AND  `goodTypes`.`langID` = '{$lang_id}'
-//                                               AND `series`.`langID` = '{$lang_id}'
-//                                               AND `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
-//                                               AND `good_mecanisms`.`goodID` = `goods`.`goodID`
-//                                               AND `good_pathes`.`goodID` = `goods`.`goodID`
-//                                               AND `price_goods`.`goodID` = `goods`.`goodID`
-//                                               AND `good_colors`.`goodID` = `goods`.`goodID`
-//                                               AND `good_series`.`goodID` = `goods`.`goodID`
-//                                               AND `series`.`seriesID` = `good_series`.`seriesID`");
 
+    $default_cover = $con->queryNoDML("SELECT `goods`.`goodID` AS 'good_id', `series`.`text` AS 'series',
+                                              `good_pathes`.`path` AS 'path', `price_goods`.`cost` AS 'price' FROM `goods`
+
+                                              JOIN `goodTypes` JOIN `good_mecanisms` JOIN `good_pathes` JOIN `price_goods`
+                                              JOIN `good_colors` JOIN `good_series` JOIN `series`
+
+                                               WHERE `goodTypes`.`goodTypeID` = '{$good_type_cover}'
+                                               AND `good_mecanisms`.`mecanismID` = '{$mecanism_id}'
+                                               AND (`good_colors`.`colorID` = '{$color_id}' OR `good_colors`.`colorID` = '0')
+                                               AND `good_series`.`seriesID` = '{$series_id}'
+                                               AND `good_mecanisms`.`goodTypeID` = '{$good_type_cover}'
+                                               AND  `goodTypes`.`langID` = '{$lang_id}'
+                                               AND `series`.`langID` = '{$lang_id}'
+                                               AND `goodTypes`.`goodTypeID` = `goods`.`good_typeID`
+                                               AND `good_mecanisms`.`goodID` = `goods`.`goodID`
+                                               AND `good_pathes`.`goodID` = `goods`.`goodID`
+                                               AND `price_goods`.`goodID` = `goods`.`goodID`
+                                               AND `good_colors`.`goodID` = `goods`.`goodID`
+                                               AND `good_series`.`goodID` = `goods`.`goodID`
+                                               AND `series`.`seriesID` = `good_series`.`seriesID`");
 }
 //print_r(DefaultCoverByMecanism('3','10'));
 function  CoverListByMecanism($lang_id,$good_id_mecanism){
