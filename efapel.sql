@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 22 2018 г., 17:53
+-- Время создания: Дек 01 2018 г., 13:09
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -99,7 +99,8 @@ INSERT INTO `goods` (`goodID`, `part_number`, `good_despID`, `good_typeID`) VALU
 (10, '21013', 0, 2),
 (11, '21031', 0, 2),
 (12, '50744T', 0, 3),
-(13, '50745T', 0, 3);
+(13, '50745T', 0, 3),
+(14, '50750T', 0, 3);
 
 -- --------------------------------------------------------
 
@@ -153,10 +154,11 @@ INSERT INTO `good_colors` (`goodID`, `colorID`) VALUES
 (7, 3),
 (8, 0),
 (9, 0),
-(10, 2),
+(10, 0),
 (11, 0),
 (12, 1),
-(13, 2);
+(13, 2),
+(14, 1);
 
 -- --------------------------------------------------------
 
@@ -216,7 +218,8 @@ INSERT INTO `good_mecanisms` (`goodID`, `mecanismID`, `goodTypeID`) VALUES
 (10, 3, 2),
 (11, 4, 2),
 (12, 1, 3),
-(13, 1, 3);
+(13, 1, 3),
+(14, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -270,7 +273,8 @@ INSERT INTO `good_pathes` (`goodID`, `path`) VALUES
 (10, 'path 4'),
 (11, 'path12'),
 (12, 'path5'),
-(13, 'path6');
+(13, 'path6'),
+(14, 'path7');
 
 -- --------------------------------------------------------
 
@@ -300,7 +304,8 @@ INSERT INTO `good_series` (`goodID`, `seriesID`) VALUES
 (10, 1),
 (11, 4),
 (12, 1),
-(13, 1);
+(13, 1),
+(14, 1);
 
 -- --------------------------------------------------------
 
@@ -323,7 +328,7 @@ INSERT INTO `good_size` (`goodID`, `v_size`, `h_size`) VALUES
 (2, 1, 2),
 (3, 1, 3),
 (4, 1, 4),
-(5, 1, 5),
+(5, 2, 5),
 (6, 1, 1),
 (7, 1, 1);
 
@@ -510,7 +515,8 @@ INSERT INTO `price_goods` (`priceID`, `goodID`, `cost`) VALUES
 (1, 10, '2500'),
 (1, 11, '2600'),
 (1, 12, '3000'),
-(1, 13, '3100');
+(1, 13, '3100'),
+(1, 14, '3200');
 
 -- --------------------------------------------------------
 
@@ -661,13 +667,13 @@ ALTER TABLE `series_model`
 -- AUTO_INCREMENT для таблицы `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `good_pathes`
 --
 ALTER TABLE `good_pathes`
-  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `goodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
