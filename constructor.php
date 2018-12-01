@@ -35,6 +35,10 @@ switch ($params->command) {
         $result = FrameVerticalHorizont($income_data->lang_id,$params->good_id_frame);
         $answer['info'] = $result;
         break;
+    case "good_info":
+        $result = GoodInfo($income_data->lang_id,$params->good_id_array);
+        $answer['info'] = $result;
+        break;
 }
 
 if ($answer['error'] > 0) {
@@ -197,8 +201,6 @@ function DefaultCoverByMecanism($lang_id,$good_id_frame,$good_id_mecanism){
                                                AND `good_series`.`goodID` = `goods`.`goodID`
                                                AND `series`.`seriesID` = `good_series`.`seriesID`
                                                ");
-
-
     if($default_cover){
         return $default_cover;
     }
@@ -300,3 +302,27 @@ function FrameVerticalHorizont($lang_id,$good_id_frame){
 
 
 }
+
+
+function GoodInfo($lang_id,$good_id_array){
+    $con = new Z_MySQL();
+    $send_array = array();
+    for($i = 0;$i < count($good_id_array);$i++){
+        $good_id = $good_id_array[$i];
+        $good_type_frame = $con->queryNoDML("SELECT `goods`.`good_typeID` AS 'good_type_frame' FROM `goods` WHERE `goods`.`goodID` = '{$good_id}'")[0]['good_type_frame'];
+
+        $data = $con->queryNoDML("SELECT `goods`.`part_number` AS 'good_code',`good_description`.`text` AS 'good_description', `price_goods`.`cost` FROM `goods`
+                                     JOIN `good_description` JOIN `price_goods`
+                                     
+                                     WHERE `goods`.`goodID` = '{$good_id}'
+                                     AND `good_description`.`langID` = '{$lang_id}'
+                                     AND `goods`.`good_despID` = `good_description`.`good_despID`
+                                     AND `price_goods`.`goodID` = `goods`.`goodID`");
+        array_push($send_array,$data);
+    }
+    return  $send_array;
+}
+$good_id_array = array("1","2","3","4","5","6","7");
+echo "<pre>";
+print_r(GoodInfo('3',$good_id_array));
+echo "</pre>";
